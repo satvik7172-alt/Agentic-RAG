@@ -46,7 +46,7 @@ if "username" not in st.session_state:
 st.success("Session initialized successfully.")
 
 if st.button("Start Chat", type="primary"):
-    st.switch_page("pages/Chat.py")
+    st.switch_page("pages/chat.py")
 
 # # Hide sidebar for cleaner look
 # hide_sidebar_style = """
