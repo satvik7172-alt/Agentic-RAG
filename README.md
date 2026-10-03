@@ -6,7 +6,9 @@
 [![FAISS](https://img.shields.io/badge/FAISS-Vector%20Search-purple.svg)](https://github.com/facebookresearch/faiss)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg)](https://streamlit.io/)
 
----
+## 🚀 Live Demo
+
+**[Try Adaptive RAG - Agentic AI Chatbot](https://agentic-rag-utacc4xqwoezcpdt89z3ee.streamlit.app/)**
 
 ## 📋 Overview
 
