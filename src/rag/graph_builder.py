@@ -213,29 +213,52 @@ def grade(state: State):
 
 
 
+# def rewrite_query(state: State):
+#     """
+#     Rewrite the query to get better retrieval results.
+
+#     Args:
+#         state (State): State of the question.
+
+#     Returns:
+#         dict: Updated latest_query.
+#     """
+#     query = state["latest_query"]
+#     rewrite_prompt = PromptTemplate(
+#         template=config.prompt("rewrite_prompt"),
+#         input_variables=["query"]
+#     )
+#     chain = rewrite_prompt | llm
+#     result = chain.invoke({"query": query})
+#     print(result)
+
+#     return {
+#         "latest_query": result.content
+#     }
+
 def rewrite_query(state: State):
     """
     Rewrite the query to get better retrieval results.
-
-    Args:
-        state (State): State of the question.
-
-    Returns:
-        dict: Updated latest_query.
     """
+
     query = state["latest_query"]
+    rewrite_count = state.get("rewrite_count", 0)
+
     rewrite_prompt = PromptTemplate(
         template=config.prompt("rewrite_prompt"),
         input_variables=["query"]
     )
+
     chain = rewrite_prompt | llm
     result = chain.invoke({"query": query})
-    print(result)
+
+    print(f"[rewrite_query] Rewrite count: {rewrite_count + 1}")
+    print(f"[rewrite_query] New query: {result.content}")
 
     return {
-        "latest_query": result.content
+        "latest_query": result.content,
+        "rewrite_count": rewrite_count + 1
     }
-
 
 def generate(state: State):
     """

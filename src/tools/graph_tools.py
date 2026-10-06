@@ -32,23 +32,47 @@ def routing_tool(state: State) -> Literal["retriever", "general_llm", "web_searc
         return "web_search"
 
 
+# def doc_tool(state: State) -> Literal["rewrite", "generate"]:
+#     """
+#     Determine whether the query needs rewriting based on grading score.
+
+#     Args:
+#         state (State): The current state of the graph.
+
+#     Returns:
+#         The next node: "generate" if score is "yes", otherwise "rewrite".
+#     """
+#     score = state["binary_score"]
+#     print(f"[doc_tool] Routing based on score: {score}")
+#     if score == "yes":
+#         return "generate"
+#     else:
+#         return "rewrite"
+
 def doc_tool(state: State) -> Literal["rewrite", "generate"]:
     """
-    Determine whether the query needs rewriting based on grading score.
-
-    Args:
-        state (State): The current state of the graph.
-
-    Returns:
-        The next node: "generate" if score is "yes", otherwise "rewrite".
+    Route based on document grading score with a maximum rewrite limit.
     """
+
     score = state["binary_score"]
-    print(f"[doc_tool] Routing based on score: {score}")
+    rewrite_count = state.get("rewrite_count", 0)
+
+    print(
+        f"[doc_tool] Score: {score}, "
+        f"Rewrite count: {rewrite_count}"
+    )
+
+    # Stop the loop after 2 rewrites
+    if rewrite_count >= 2:
+        print("[doc_tool] Maximum rewrite limit reached.")
+        return "generate"
+
+    # Documents are relevant
     if score == "yes":
         return "generate"
-    else:
-        return "rewrite"
 
+    # Documents are not relevant → rewrite
+    return "rewrite"
 
 def verify_answer(state: State) -> Literal["__end__", "generate"]:
     """
